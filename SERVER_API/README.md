@@ -32,6 +32,9 @@ install dependencies
 !pip install matplotlib
 ```
 
+#### NOTE : Need Cuda Opencv Build from Source For Speed But Normal opencv Also should Work Fine.
+
+
 ## step 3
 #### download below mentoined weights from drive link: https://drive.google.com/drive/folders/1zP2cQ_LVuVzXykqso9mVDAjvDTHYF4nR?usp=sharing
 
@@ -60,5 +63,5 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', <YOUR IP> ]
 python manage.py runserver <YOUR IP>:8000
 EX : python manage.py runserver 192.186.1.227:8000
 ```
-### note: it will take time to load When first time you Call Api.
+### NOTE : it will take time to load When first time you Call Api.
 
