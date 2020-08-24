@@ -1,0 +1,8 @@
+pip install pillow
+pip install cv2
+pip install numpy
+pip install pprint
+pip install mysql-connector-python
+pip install DateTime
+pip install pdf2image
+pip install python-docx

@@ -1,0 +1,46 @@
+{
+	"APIURL":"http://192.168.1.227:8000/test/",
+	"DBconn": {	"host":"db4free.net",
+				"user":"ksv1234",
+				"passwd":"ldrp-itr",
+				"database":"ksvrto",
+				"port":3306
+	},
+	"Offances":[ 
+				{	
+					"Offance":"Violating parking rules",	
+					"fine1":"500",
+					"fine2":"1000"		
+				},
+				{
+					"Offance":"Not wearing a helmet",
+					"fine1":"1000",
+					"fine2":"1000"
+				},
+				{
+					"Offance":"Driving a motor vehicle at a speed which is dangerous to the public",
+					"fine1":"1500",
+					"fine2":"1500"
+				},
+				{
+					"Offance":"Not Wearing Seatbelt",
+					"fine1":"1000",
+					"fine2":"1000"
+				},
+				{
+					"Offance":"Breaching traffic signal",
+					"fine1":"500",
+					"fine2":"1000"
+				},
+				{
+					"Offance":"having additional Person sitting on driving seat",
+					"fine1":"500",
+					"fine2":"500"
+				},
+				{
+					"Offance":"overloading of 2Wheelers",
+					"fine1":"2000",
+					"fine2":"2000"
+				}
+			]	
+}
