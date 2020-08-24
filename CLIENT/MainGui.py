@@ -17,10 +17,20 @@ import sys
 import subprocess
 import re
 import Email
+import sys
+
+def isWindows():
+		is_windows = sys.platform.startswith('win')
+		if is_windows:
+			return True
+		return False
+
+if isWindows():
+	from docx2pdf import convert
 
 lbl_load = None
 print("Start...!")
-Video_Path = r'/home/manand8/dev/sih/SIH_APP_CLIENT/camVideo.mp4'
+
 x_start, y_start, x_end, y_end = 0, 0, 0, 0
 chnNo = "INGJAH"
 xline ,yline = 100,100
@@ -51,8 +61,10 @@ root = tk.Tk()
 root.title('Traffic Violation E-Challan Generation')
 root.geometry('1366x668')
 # root.geometry('1366x768')
-# root.state('zoomed')
+root.state('zoomed')
 root.configure(background='black')
+Video_Path = configjson_data['VideoPath']
+
 cap = cv2.VideoCapture(Video_Path,0)
 cap.grab()
 ret, frame = cap.retrieve()
@@ -171,7 +183,10 @@ def GenerateChallan():
 		ccc = chn.challan(chnNo,plateno,date,name,location,vehicletype,tuple(OffenceList),challancount,conn)
 		ccc.GenerateChallan()
 		ccc.AddChallanToDb()
-		result = convert_to('Pdfs',  'challans/'+str(chnNo)+'.docx', timeout=15)
+		if isWindows():
+			convert( 'challans/'+str(chnNo)+'.docx',  'Pdfs/'+str(chnNo)+'.pdf')
+		else:
+			result = convert_to('Pdfs',  'challans/'+str(chnNo)+'.docx', timeout=15)
 		StatusGui.configure(text="Challan Generated Successful.")
 		StatusGui.update()
 		stopLoading()
@@ -184,13 +199,15 @@ def GenerateChallan():
 		stopLoading()
 
 
+
 def SendMail():
 	Em = Email.Email_Chn()
 	Em.SendMail(email,chnNo,plateno,date,name,location,"Pdfs/"+chnNo+".pdf")
 
+
 def showPdf():
 	# pages = convert_from_path(r'Pdfs/'+chnNo+'.pdf',size=(800,900))
-	pages = convert_from_path(r'Pdfs/'+"INGJAH8431"+'.pdf',size=(800,900))
+	pages = convert_from_path(r'Pdfs/'+"INDGUJ15626597"+'.pdf',size=(800,900))
 
 	pdf = tk.Toplevel(root)
 
@@ -545,7 +562,7 @@ def cropNoPlate(cords):
 	imglbl3.configure(image=imgtk5)
 
 def openVideo():
-	filename =  filedialog.askopenfilename(initialdir = "/home/manand8/dev/sih/SIH_APP_CLIENT",title = "Select file",filetypes = (("MP4 File","*.mp4"),("all files","*.*")))
+	filename =  filedialog.askopenfilename(initialdir = configjson_data['VideoPath'],title = "Select file",filetypes = (("MP4 File","*.mp4"),("all files","*.*")))
 	print (' [ SELECTED VIDEO ] ',filename)
 	global cap,count, FrameCount
 	cap = cv2.VideoCapture(filename)
@@ -625,7 +642,6 @@ helpmenu = tk.Menu(menubar, tearoff=0)
 helpmenu.add_command(label = "Help Index", command = donothing)
 helpmenu.add_command(label = "About...", command = donothing)
 menubar.add_cascade(label = "Help", menu = helpmenu)
-
 root.config(menu = menubar)
 
 
@@ -634,24 +650,24 @@ MidFrm = tk.Frame(root,bg=clr2)
 
 #===========================================================( MID LEFT FRAME )===========================================================          
 MidLeftFrm = tk.Frame(MidFrm,bg=clr2,relief=tk.GROOVE,bd=2)
-#default = Image.open("test1.png")
-#default = default.resize(ResizePara,Image.ANTIALIAS)
+# default = Image.open("test1.png")
+# default = default.resize(ResizePara,Image.ANTIALIAS)
 
 #===========================================================( Video FRAME )===========================================================          
-MidLeftTopFrm = tk.Frame(MidLeftFrm,bg=clr2)
+MidLeftTopFrm = tk.Frame(MidLeftFrm,bg=clr2,relief=tk.GROOVE,bd=2)
 
 defaultimg = Image.fromarray(np.zeros((400,400)))
 defaultimg = ImageTk.PhotoImage(image = defaultimg)
 
 Vidlbl = tk.Label(MidLeftTopFrm,name="image",image=defaultimg,width=ResizePara[0], height=ResizePara[1],relief=tk.GROOVE,bd=2)
 Vidlbl.image = defaultimg
-Vidlbl.pack(side = tk.TOP ,fill = tk.BOTH)
+Vidlbl.pack(side = tk.TOP ,fill = tk.Y)
 Vidlbl.bind("<Button-1>", mouse_crop_left)
 Vidlbl.bind("<ButtonRelease-1>", mouse_crop_right)#<Button-3>
 Vidlbl.bind("<Motion>", linesonvid)
 #Vidlbl.bind("<B1-Motion>", linesonvid)
 Vidlbl.config(cursor="cross")
-MidLeftTopFrm.pack(side = tk.TOP,fill = tk.BOTH,expand=True)
+MidLeftTopFrm.pack(side = tk.TOP,fill = tk.X,expand=False)
 #btnok = tk.Label(MidLeftFrm, text="o", fg=clr3, bg=clr1,font=("Helvetica", 10))
 #btnok.pack(side = tk.RIGHT)
 
@@ -678,7 +694,7 @@ MidLeftBtmFrm.grid_columnconfigure(2, weight=1)
 MidLeftBtmFrm.grid_columnconfigure(3, weight=1)
 MidLeftBtmFrm.grid_columnconfigure(4, weight=1)
 
-MidLeftBtmFrm.pack(side = tk.TOP,fill = tk.BOTH,expand=True)
+MidLeftBtmFrm.pack(side = tk.TOP,fill = tk.BOTH,expand=False)
 
 
 #======================================================( MID LEFT BOTTOM FRAME )===========================================================          
@@ -691,7 +707,7 @@ btnLive.grid(row = 1, column = 1,pady = 5,padx = 5,sticky="we")
 #.grid(row = 1, column = 1,pady = 5,padx = 5)
 MidLeftBtmFrm2.grid_columnconfigure(0, weight=1)
 MidLeftBtmFrm2.grid_columnconfigure(1, weight=1)
-MidLeftBtmFrm2.pack(side = tk.TOP,fill = tk.BOTH,expand=True)
+MidLeftBtmFrm2.pack(side = tk.TOP,fill = tk.BOTH,expand=False)
 
 
 
@@ -717,11 +733,11 @@ MidLeftBtmFrm3.grid_columnconfigure(3, weight=1)
 MidLeftBtmFrm3.grid_columnconfigure(4, weight=1)
 MidLeftBtmFrm3.grid_columnconfigure(5, weight=1)
 
-MidLeftBtmFrm3.pack(side = tk.TOP,fill = tk.BOTH,expand=True)
+MidLeftBtmFrm3.pack(side = tk.TOP,fill = tk.BOTH,expand=False)
 
 
 
-MidLeftFrm.pack(side = tk.LEFT,fill = tk.BOTH,expand=True)
+MidLeftFrm.pack(side = tk.LEFT,fill = tk.BOTH,expand=False)
 
 #==========================================================( MID RIGHT FRAME )===========================================================          
 
@@ -741,7 +757,8 @@ tk.Label(MidRightImgFrm, text= " Vehicle ",bg=clr1, fg=clr3, font=("Helvetica", 
 imglbl2 = tk.Label(MidRightImgFrm,image=defaultimg,width=200, height=200,relief=tk.GROOVE,bd=1)
 imglbl2.grid(row = 0, column = 1,pady = 5,padx = 5)
 tk.Label(MidRightImgFrm, text= " Vehicle owner",bg=clr1, fg=clr3, font=("Helvetica", 12),relief=tk.RIDGE,bd=2).grid(row = 1, column = 1,pady = 3,padx = 3,sticky="news")
-
+MidRightImgFrm.grid_columnconfigure(1, weight=1)
+MidRightImgFrm.grid_columnconfigure(0, weight=1)
 MidRightImgFrm.grid(row = 0, column = 0,pady = 0,padx = 0,sticky='news')#pack(side = tk.LEFT,fill = tk.BOTH )
 
 #========================================================( MID RIGHT DATA FRAME )===========================================================          
@@ -771,7 +788,7 @@ lblemail.grid(			row = 4, column = 0,pady = 3,padx = 5 , stick = "we")
 lblvehicletype.grid(	row = 5, column = 0,pady = 3,padx = 5 , stick = "we")
 lblvehiclecompany.grid(	row = 6, column = 0,pady = 3,padx = 5 , stick = "we")
 
-MidRightDataFrm.grid_columnconfigure(1, weight=1)
+# MidRightDataFrm.grid_columnconfigure(1, weight=1)
 MidRightDataFrm.grid_columnconfigure(0, weight=1)
 
 MidRightDataFrm.grid(row = 0, column = 1,pady = 0,padx = 0,sticky='news')#.pack(side = tk.TOP,fill = tk.X,expand=False)

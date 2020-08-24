@@ -6,3 +6,5 @@ pip install mysql-connector-python
 pip install DateTime
 pip install pdf2image
 pip install python-docx
+if windows 
+	pip install docx2pdf

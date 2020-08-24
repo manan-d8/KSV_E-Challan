@@ -6,6 +6,8 @@
 				"database":"ksvrto",
 				"port":3306
 	},
+	"VideoPath":"E:/0NewDev/New/Data/camVideo.mp4",
+	"VideoBasePath":"E:/0NewDev/New/Data/",
 	"Offances":[ 
 				{	
 					"Offance":"Violating parking rules",	

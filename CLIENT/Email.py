@@ -67,7 +67,7 @@ class Email_Chn:
 
 			str1 = """
 			<body style='background-color : #66CCFF'><center><h1> This Mail is from Autometic E-Challan System. </h1></<center>
-			<div style='background-color :	 #CCFFCC'>
+			<div style='background-color :	#CAF7FF'>
 				<table style="width:100%">
 				  <tr>
 				    <td style="border: 2px solid black" ><h4>Challan Number :</h4></td>
