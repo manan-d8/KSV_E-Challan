@@ -203,6 +203,8 @@ def GenerateChallan():
 def SendMail():
 	Em = Email.Email_Chn()
 	Em.SendMail(email,chnNo,plateno,date,name,location,"Pdfs/"+chnNo+".pdf")
+	StatusGui.configure(text="Mail Sent.")
+	StatusGui.update()
 
 
 def showPdf():
@@ -340,11 +342,18 @@ def call_Our_API():
 					print((x1,x1+w,y1,y1+h))
 					cropNoPlate((x1,x1+w,y1,y1+h))
 				else:
+					StatusGui.configure(text="Plate NotFound.")
+					StatusGui.update()
 					print("NotFound")
+		else:
+			StatusGui.configure(text="Plate NotFound.")
+			StatusGui.update()
 
 	except Exception as e:
 		print(e)
 		val={'error':e}
+		StatusGui.configure(text="Api Response Failed.")
+		StatusGui.update()
 	finally:
 		img   = Image.open("cropped%d.jpg"%cropCount).resize((200, 200))
 		imgtk = ImageTk.PhotoImage(image = img)
@@ -440,9 +449,11 @@ def showLoading():
 	lbl_load.update()
 	x = root.winfo_x()
 	y = root.winfo_y()
+	ww = root.winfo_width()
+	hh = root.winfo_height() 
 	w = lbl_load.winfo_width()
 	h = lbl_load.winfo_height()  
-	lbl_load.geometry("%dx%d+%d+%d" % (w, h, x +400, y +250 ))
+	lbl_load.geometry("%dx%d+%d+%d" % (w, h, x + (ww//2-w//2), y + (hh//2-h//2) ))
 	lbl_load.update()
 	# img = ImageLabel(root)
 	# img.mainloop()
@@ -450,8 +461,11 @@ def showLoading():
 
 def stopLoading():
 	# lbl_load.unload()
-	global lbl_load
-	lbl_load.destroy()
+	try:
+		global lbl_load
+		lbl_load.destroy()
+	except:
+		pass
 
 def APIconnection():
 	global APIgui

@@ -8,3 +8,4 @@ pip install pdf2image
 pip install python-docx
 if windows 
 	pip install docx2pdf
+

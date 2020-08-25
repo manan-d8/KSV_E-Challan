@@ -36,7 +36,7 @@ class Email_Chn:
 			print("working on email To :",email)
 
 			msg = MIMEMultipart()
-			msg["Subject"] = "ASCV Visitor Update"
+			msg["Subject"] = "E-Challan"
 			msg["From"] = "Alert <{0}>".format(email)
 			msg["To"] = email
 			#================================
